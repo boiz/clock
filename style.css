@@ -1,0 +1,68 @@
+body {
+    font-family: arial;
+    font-size: 12px;
+}
+
+button {
+    cursor: pointer;
+    height: 1.55em;
+}
+
+input {
+    width: 12em;
+}
+
+.place{
+	width: 8em;
+}
+
+
+.container {
+    display: flex;
+}
+
+.container>* {
+    margin-right: .2em;
+}
+
+.timewrap {
+    position: relative;
+}
+
+.timewrap button {
+    position: absolute;
+    height: 0.7em;
+    width: 2em;
+    right: 0.05em;
+    display: inline-block;
+    border: 0;
+
+}
+
+.timewrap button:hover {
+    background: gray;
+}
+
+.timewrap button:active {
+    background: #666;
+}
+
+.timewrap button span {
+    font-size: 0.5em;
+    position: absolute;
+    top: 0.2em;
+    left: 1.5em;
+    color: #333;
+}
+
+.timewrap .up {
+    top: 0.1em;
+}
+
+.timewrap .down {
+    top: 0.8em;
+}
+
+tr, td{
+    border:solid black 1px;
+}
