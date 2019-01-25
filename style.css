@@ -66,3 +66,14 @@ input {
 tr, td{
     border:solid black 1px;
 }
+
+.blink{
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    0% { background: white; }
+    50% { background: white; }
+    50.01% { background: #eee; }
+    100% { background: #eee; }
+}
