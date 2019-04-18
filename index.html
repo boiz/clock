@@ -7,7 +7,8 @@
 </head>
 <body>
 
-<div class="container">
+
+<form id="form" class="container">
 
 	<div class="timewrap">
 		<input class="time blink">
@@ -15,14 +16,49 @@
 		<button class="down" title="-0:05"><span>▼</span></button>
 	</div>
 
+	<input name="place" class="place" placeholder="Place" value="Office">
+	<input name="work" class="work" placeholder="Work" value="IT Support">
+	<button id="in">In</button>
+	<button id="out">Out</button>	
 
-	<input class="place" placeholder="Place">
-	<input class="work" placeholder="Work">
-	<button>In</button>
-	<button>Out</button>	
+</form>
 
-</div>
-
+<table class="data">
+	<thead>
+		<tr>
+			<td>Select</td>
+			<td>Date</td>
+			<td>Time In</td>
+			<td>Time Out</td>
+			<td>Place/work</td>
+			<td>Mileage</td>
+			<td>Hours</td>
+			<td>Other</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><input type="radio" class="radio" name="select"></td>
+			<td class="date">1-22</td>
+			<td class="in"></td>
+			<td class="out"></td>
+			<td class="pw"></td>
+			<td></td>
+			<td class="hr"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><input type="radio" class="radio" name="select"></td>
+			<td class="date">1-22</td>
+			<td class="in"></td>
+			<td class="out"></td>
+			<td class="pw"></td>
+			<td></td>
+			<td class="hr"></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
 
 <script src="lib.js"></script>
 <script src="main.js"></script>

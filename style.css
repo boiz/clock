@@ -8,14 +8,13 @@ button {
     height: 1.55em;
 }
 
-input {
+input[type="text"] {
     width: 12em;
 }
 
-.place{
-	width: 8em;
+.place {
+    width: 8em;
 }
-
 
 .container {
     display: flex;
@@ -36,7 +35,6 @@ input {
     right: 0.05em;
     display: inline-block;
     border: 0;
-
 }
 
 .timewrap button:hover {
@@ -63,17 +61,42 @@ input {
     top: 0.8em;
 }
 
-tr, td{
-    border:solid black 1px;
+tr, td {
+    border: solid black 1px;
 }
 
-.blink{
+.blink {
     animation: blink 1s linear infinite;
 }
 
 @keyframes blink {
-    0% { background: white; }
-    50% { background: white; }
-    50.01% { background: #eee; }
-    100% { background: #eee; }
+    0% {
+        background: white;
+    }
+
+    50% {
+        background: white;
+    }
+
+    50.01% {
+        background: #eee;
+    }
+
+    100% {
+        background: #eee;
+    }
+}
+
+.data {
+    border-collapse: collapse;
+    border: solid black 1px;
+    margin-top: 2em;
+}
+
+.data td {
+    padding: .5em
+}
+
+.data tr.high{
+    background-color:lightyellow;
 }
