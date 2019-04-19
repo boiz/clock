@@ -16,6 +16,10 @@ input[type="text"] {
     width: 8em;
 }
 
+.lunch {
+    width: 2em;
+}
+
 .container {
     display: flex;
 }
@@ -85,6 +89,7 @@ tr, td {
     100% {
         background: #eee;
     }
+
 }
 
 .data {
@@ -97,6 +102,10 @@ tr, td {
     padding: .5em
 }
 
-.data tr.high{
-    background-color:lightyellow;
+.data tr.high {
+    background-color: lightyellow;
+}
+
+.button {
+    margin-top: .5em;
 }

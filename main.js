@@ -66,8 +66,15 @@ const getDate=()=>{
 	}
 }
 
+const HR=1000*3600;
+
 const getStamp=node=>node.dataset.stamp;
-const msToHour=ms=>(ms/1000/3600).toFixed(2);
+const msToHour=ms=>{
+	const res=ms/HR;
+
+	if(res==res.toFixed(2)) return res;
+	else return res.toFixed(2);
+}
 
 const main=inOut=>{
 
@@ -82,9 +89,12 @@ const main=inOut=>{
 
 	stamp.out=getStamp(my$(".data .high .out"));
 	stamp.in=getStamp(my$(".data .high .in"));
+	stamp.lunch=+form.lunch.value*HR;
+
+	console.log(stamp);
 
 	if(stamp.out>stamp.in){
-		my$(".data .high .hr").innerText=msToHour(stamp.out-stamp.in);
+		my$(".data .high .hr").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
 	}
 }
 
