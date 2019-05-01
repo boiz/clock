@@ -50,13 +50,19 @@ my$(".down").onclick=()=>{
 	tick("down");
 }
 
-for(const x of my$(".data tbody tr")){
-	x.onclick=()=>{
+
+const clickMagic=node=>{
+
+	node.onclick=()=>{
 		if(my$(".data .high").length!=0) my$(".data .high").classList.remove("high");
-		x.querySelector("input").checked=true;
-		x.classList.add("high");
+		node.querySelector("input").checked=true;
+		node.classList.add("high");
 	}
+
+	node.querySelector(".del").onclick=()=>node.remove();	
+
 }
+
 
 const getDate=()=>{
 	const d=new Date();
@@ -77,7 +83,7 @@ const msToHour=ms=>{
 }
 
 const main=inOut=>{
-
+	addRow();
 	my$(".data .high .date").innerText=`${getDate().month}-${getDate().date}`;
 	my$(".data .high .pw").innerText=`${form.place.value} / ${form.work.value}`;
 	const out=valueToTime(my$(".time"));
@@ -107,8 +113,6 @@ my$("#out").onclick=()=>{
 	main(my$(".data .high .out"));
 }
 
-
-
 form.onsubmit=()=>false;
 
 
@@ -125,5 +129,14 @@ const valueToTime=timeNode=>{
 
 	return out;
 }
+
+const addRow=()=>{
+	const node=my$(".clone tr").cloneNode(true);
+	clickMagic(node);
+	node.click();
+	my$(".data tbody").appendChild(node);
+}
+
+
 
 //const sd=new Date(nd.toLocalDateString()); //second Date

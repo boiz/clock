@@ -5,7 +5,8 @@ body {
 
 button {
     cursor: pointer;
-    height: 1.55em;
+    height: 2em;
+    width: 6em;
 }
 
 input[type="text"] {
@@ -89,7 +90,6 @@ tr, td {
     100% {
         background: #eee;
     }
-
 }
 
 .data {
@@ -108,4 +108,14 @@ tr, td {
 
 .button {
     margin-top: .5em;
+}
+
+.data .del{
+    cursor: pointer;
+    text-align: center;
+    display: block;
+}
+
+.data .del img{
+    width:1em;
 }
