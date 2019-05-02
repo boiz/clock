@@ -4,9 +4,9 @@ const oneMin=1000*60;
 const trimTime=dateObj=>{
 	const str=dateObj.toLocaleString();
 	const sec=str.substr(str.indexOf(":")+4,3);
-	//console.log(str,sec);
+
 	return str.replace(sec,"");
-	//return str;
+
 }
 
 const stamp=dateObj=>{
@@ -83,29 +83,34 @@ const msToHour=ms=>{
 }
 
 const main=inOut=>{
-	addRow();
-	my$(".data .high .date").innerText=`${getDate().month}-${getDate().date}`;
-	my$(".data .high .pw").innerText=`${form.place.value} / ${form.work.value}`;
+	
+	if(my$(".high").length==0) return;
+
+	my$(".high .date").innerText=`${getDate().month}-${getDate().date}`;
+	my$(".high .pw").innerText=`${form.place.value} / ${form.work.value}`;
+	
 	const out=valueToTime(my$(".time"));
+
 	inOut.innerText=out.value;
 	inOut.dataset.stamp=out.stamp;
 
-
 	const stamp={}
 
-	stamp.out=getStamp(my$(".data .high .out"));
-	stamp.in=getStamp(my$(".data .high .in"));
+	stamp.out=getStamp(my$(".high .out"));
+	stamp.in=getStamp(my$(".high .in"));
 	stamp.lunch=+form.lunch.value*HR;
 
-	console.log(stamp);
 
-	if(stamp.out>stamp.in){
-		my$(".data .high .hr").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
+	if(stamp.out>=stamp.in){
+		my$(".high .hr").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
 	}
+
+	my$(".high .other").innerText=my$("#form .other").value;
 }
 
 
 my$("#in").onclick=()=>{
+	addRow();
 	main(my$(".data .high .in"));
 }
 
@@ -138,5 +143,22 @@ const addRow=()=>{
 }
 
 
+ajax({
+	url:"http://192.168.0.109:3005/post",
+	method:"post",
+	data:{
+		a:1,
+		b:2
+	},
+	callback:res=>{}
+});
 
+my$(".lunch").onkeyup=e=>{
+
+	const v=my$(".lunch").value;
+	const oth=my$(".other");
+
+	if(v==1) oth.value="";
+	else oth.value=`${v} hr Break`;
+}
 //const sd=new Date(nd.toLocalDateString()); //second Date
