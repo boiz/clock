@@ -9,8 +9,10 @@ button {
     width: 6em;
 }
 
-input[type="text"] {
+input {
     width: 12em;
+    height: 1.5em;
+    padding: .5em;
 }
 
 .place {
@@ -35,11 +37,11 @@ input[type="text"] {
 
 .timewrap button {
     position: absolute;
-    height: 0.7em;
+    height: 1.3em;
     width: 2em;
     right: 0.05em;
     display: inline-block;
-    border: 0;
+    border: solid gray 1px;
 }
 
 .timewrap button:hover {
@@ -51,10 +53,10 @@ input[type="text"] {
 }
 
 .timewrap button span {
-    font-size: 0.5em;
+    font-size: 0.9em;
     position: absolute;
-    top: 0.2em;
-    left: 1.5em;
+    top: 0.1em;
+    left: 0.6em;
     color: #333;
 }
 
@@ -63,7 +65,7 @@ input[type="text"] {
 }
 
 .timewrap .down {
-    top: 0.8em;
+    top: 1.4em;
 }
 
 tr, td {
@@ -110,12 +112,20 @@ tr, td {
     margin-top: .5em;
 }
 
-.data .del{
+.data .del {
     cursor: pointer;
     text-align: center;
     display: block;
 }
 
-.data .del img{
-    width:1em;
+.data .del img {
+    width: 1em;
+}
+
+#sheet{
+    height:2em;
+}
+
+.checkbox{
+    width:initial;
 }

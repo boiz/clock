@@ -23,14 +23,21 @@
 
 </form>
 <div class="button">
+	<button id="newin">New In</button>
 	<button id="in">In</button>
 	<button id="out">Out</button>
+	<button id="saveto">Save to</button>
+	<select id="sheet">
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+	</select>
 </div>
 
 <table class="clone" hidden>
 	<tbody>
 		<tr>
-			<td><input type="radio" class="radio" name="select"></td>
+			<td><input type="checkbox" class="checkbox" name="select"></td>
 			<td class="date"></td>
 			<td class="in"></td>
 			<td class="out"></td>
@@ -60,6 +67,20 @@
 	<tbody>
 
 	</tbody>
+	<tfoot>
+		<tr>
+			<td></td>
+			<td class="date"></td>
+			<td class="in"></td>
+			<td class="out"></td>
+			<td class="pw"></td>
+			<td>Total</td>
+			<td id="total"></td>
+			<td class="other"></td>
+			<td></td>
+		</tr>
+
+	</tfoot>
 </table>
 
 <script src="lib.js"></script>

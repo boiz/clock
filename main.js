@@ -50,22 +50,35 @@ my$(".down").onclick=()=>{
 	tick("down");
 }
 
+const notHighlighted=()=>my$(".high").length==0;
+
+const unHighlight=()=>{
+	if(notHighlighted()) return;
+	my$(".high .checkbox").checked=false;
+	my$(".high").classList.remove("high");
+}
+
+const highlight=node=>{
+	node.querySelector(".checkbox").checked=true;
+	node.classList.add("high");	
+}
 
 const clickMagic=node=>{
 
 	node.onclick=()=>{
-		if(my$(".data .high").length!=0) my$(".data .high").classList.remove("high");
-		node.querySelector("input").checked=true;
-		node.classList.add("high");
+		if(notHighlighted()==false) unHighlight();
+		highlight(node);
 	}
 
-	node.querySelector(".del").onclick=()=>node.remove();	
-
+	node.querySelector(".del").onclick=()=>{
+		node.onclick=null;
+		node.remove();
+		getTotal();
+	}
 }
 
-
-const getDate=()=>{
-	const d=new Date();
+const getDate=date=>{
+	const d=new Date(date);
 	return {
 		month:d.getMonth()+1,
 		date:d.getDate()
@@ -84,9 +97,11 @@ const msToHour=ms=>{
 
 const main=inOut=>{
 	
-	if(my$(".high").length==0) return;
+	if(notHighlighted()) return;
 
-	my$(".high .date").innerText=`${getDate().month}-${getDate().date}`;
+	const d=getDate(my$(".time").value);
+
+	my$(".high .date").innerText=`${d.month}-${d.date}`;
 	my$(".high .pw").innerText=`${form.place.value} / ${form.work.value}`;
 	
 	const out=valueToTime(my$(".time"));
@@ -100,22 +115,26 @@ const main=inOut=>{
 	stamp.in=getStamp(my$(".high .in"));
 	stamp.lunch=+form.lunch.value*HR;
 
-
 	if(stamp.out>=stamp.in){
 		my$(".high .hr").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
 	}
 
 	my$(".high .other").innerText=my$("#form .other").value;
+
+	getTotal();
 }
 
-
-my$("#in").onclick=()=>{
-	addRow();
+my$("#in").onclick=e=>{
 	main(my$(".data .high .in"));
 }
 
-my$("#out").onclick=()=>{
+my$("#out").onclick=e=>{
 	main(my$(".data .high .out"));
+}
+
+my$("#newin").onclick=e=>{
+	addRow();
+	my$("#in").click();
 }
 
 form.onsubmit=()=>false;
@@ -142,8 +161,9 @@ const addRow=()=>{
 	my$(".data tbody").appendChild(node);
 }
 
+const getTotal=()=>my$("#total").innerText=my$(".hr").map(x=>Number(x.innerText)).reduce((a,b)=>a+b);
 
-ajax({
+/*ajax({
 	url:"http://192.168.0.109:3005/post",
 	method:"post",
 	data:{
@@ -151,7 +171,7 @@ ajax({
 		b:2
 	},
 	callback:res=>{}
-});
+});*/
 
 my$(".lunch").onkeyup=e=>{
 
