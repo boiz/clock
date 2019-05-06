@@ -22,16 +22,18 @@
 	<input name="other" class="other" placeholder="other" value="">
 
 </form>
+
+<div class="button">
+	<button id="newsheet">New Sh</button>
+	<button id="saveto">Save to</button>
+	<select id="sheet"></select>
+	<button id="delsheet">delete</button>
+</div>
+
 <div class="button">
 	<button id="newin">New In</button>
 	<button id="in">In</button>
 	<button id="out">Out</button>
-	<button id="saveto">Save to</button>
-	<select id="sheet">
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-	</select>
 </div>
 
 <table class="clone" hidden>
@@ -41,7 +43,11 @@
 			<td class="date"></td>
 			<td class="in"></td>
 			<td class="out"></td>
-			<td class="pw"></td>
+			<td class="pw">
+				<span class="place"></span>
+				<span> / </span>
+				<span class="work"></span>
+			</td>
 			<td></td>
 			<td class="hr"></td>
 			<td class="other"></td>

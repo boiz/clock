@@ -102,8 +102,10 @@ const main=inOut=>{
 	const d=getDate(my$(".time").value);
 
 	my$(".high .date").innerText=`${d.month}-${d.date}`;
-	my$(".high .pw").innerText=`${form.place.value} / ${form.work.value}`;
+	my$(".high .place").innerText=`${form.place.value}`;
+	my$(".high .work").innerText=`${form.work.value}`;
 	
+
 	const out=valueToTime(my$(".time"));
 
 	inOut.innerText=out.value;
@@ -163,15 +165,44 @@ const addRow=()=>{
 
 const getTotal=()=>my$("#total").innerText=my$(".hr").map(x=>Number(x.innerText)).reduce((a,b)=>a+b);
 
-/*ajax({
-	url:"http://192.168.0.109:3005/post",
-	method:"post",
-	data:{
-		a:1,
-		b:2
-	},
-	callback:res=>{}
-});*/
+
+const sheetlist=cb=>{
+
+	ajax({
+		url:"http://192.168.0.109:3005/sheetlist",
+		method:"get",
+		callback:res=>{
+			res.forEach((x,i)=>{
+				const html=`<option id="${x.id}">${x.sheet}</option>`;
+				my$("#sheet").innerHTML+=html;
+
+				if(i==0) data(x.id);
+
+			});
+		}
+	});
+
+}
+
+my$("#sheet").onchange=ev=>{
+	data(sheetId());
+}
+
+const data=id=>{
+
+	ajax({
+		url:`http://192.168.0.109:3005/data?id=${id}`,
+		method:"get",
+		callback:res=>{
+			my$(".data tbody").innerHTML=jstrToTab(res[0].datastr);
+			for(const node of my$(".data tbody tr")) clickMagic(node);
+		}
+	});
+
+}
+ 
+
+sheetlist();
 
 my$(".lunch").onkeyup=e=>{
 
@@ -181,4 +212,89 @@ my$(".lunch").onkeyup=e=>{
 	if(v==1) oth.value="";
 	else oth.value=`${v} hr Break`;
 }
-//const sd=new Date(nd.toLocalDateString()); //second Date
+
+my$("#delsheet").onclick=ev=>{
+	const an=confirm("Are you sure?");
+	console.log(an);
+}
+
+const sheetId=x=>{
+	const index=my$("#sheet").selectedIndex;
+	return my$("#sheet").options[index].id;
+}
+
+
+my$("#saveto").onclick=ev=>{
+	ajax({
+		url:"http://192.168.0.109:3005/update",
+		method:"post",
+		data:{
+			id:sheetId(),
+			datastr:tabToJstr()
+		}
+	});
+
+}
+
+
+const jstrToTab=str=>{
+
+	let html="";
+ 
+	for(const x of JSON.parse(str)){
+		html+=
+		`
+		<tr>
+			<td><input type="checkbox" class="checkbox" name="select"></td>
+			<td class="date">${x.date}</td>
+			<td class="in">${x.timein}</td>
+			<td class="out">${x.timeout}</td>
+			<td class="pw">
+				<span class="place">${x.place}</span>
+				<span> / </span>
+				<span class="work">${x.work}</span>
+			</td>
+			<td></td>
+			<td class="hr"></td>
+			<td class="other">${x.other}</td>
+			<td><a class="del"><img src="x.png"></a></td>
+		</tr>
+		`
+	}
+
+	return html;
+
+
+		
+}
+
+const tabToJstr=x=>{
+
+	const tool=(x,sel)=>{
+		return x.querySelector(sel).innerText;
+	}
+
+	const arr=[];
+
+	for(const x of my$(".data tbody tr")){
+
+		const obj={
+			date:tool(x,".date"),
+			timein:tool(x,".in"),
+			timeout:tool(x,".out"),
+			place:tool(x,".place"),
+			work:tool(x,".work"),
+			other:tool(x,".other")
+		}
+
+		arr.push(obj);
+	}
+
+	return JSON.stringify(arr);
+
+}
+
+
+
+
+
