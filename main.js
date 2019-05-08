@@ -95,7 +95,9 @@ const msToHour=ms=>{
 	else return res.toFixed(2);
 }
 
-const main=inOut=>{
+
+
+const main=cell=>{
 	
 	if(notHighlighted()) return;
 
@@ -108,8 +110,8 @@ const main=inOut=>{
 
 	const out=valueToTime(my$(".time"));
 
-	inOut.innerText=out.value;
-	inOut.dataset.stamp=out.stamp;
+	cell.innerText=out.value;
+	cell.dataset.stamp=out.stamp;
 
 	const stamp={}
 
@@ -118,7 +120,7 @@ const main=inOut=>{
 	stamp.lunch=+form.lunch.value*HR;
 
 	if(stamp.out>=stamp.in){
-		my$(".high .hr").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
+		my$(".high .hour").innerText=msToHour(stamp.out-stamp.in-stamp.lunch);
 	}
 
 	my$(".high .other").innerText=my$("#form .other").value;
@@ -161,13 +163,15 @@ const addRow=()=>{
 	clickMagic(node);
 	node.click();
 	my$(".data tbody").appendChild(node);
+	
 }
 
-const getTotal=()=>my$("#total").innerText=my$(".hr").map(x=>Number(x.innerText)).reduce((a,b)=>a+b);
-
+const getTotal=()=>{
+	if(my$(".data tbody tr").length==0) return;
+	my$("#total").innerText=my$(".hour").map(x=>Number(x.innerText)).reduce((a,b)=>a+b);
+}
 
 const sheetlist=cb=>{
-
 	ajax({
 		url:"http://192.168.0.109:3005/sheetlist",
 		method:"get",
@@ -181,7 +185,6 @@ const sheetlist=cb=>{
 			});
 		}
 	});
-
 }
 
 my$("#sheet").onchange=ev=>{
@@ -194,13 +197,11 @@ const data=id=>{
 		url:`http://192.168.0.109:3005/data?id=${id}`,
 		method:"get",
 		callback:res=>{
-			my$(".data tbody").innerHTML=jstrToTab(res[0].datastr);
-			for(const node of my$(".data tbody tr")) clickMagic(node);
+			jstrToTab(res[0].datastr);
 		}
 	});
 
 }
- 
 
 sheetlist();
 
@@ -224,6 +225,13 @@ const sheetId=x=>{
 }
 
 
+const saveDone=msg=>{
+	const el=my$("#saveto");
+	const txt=el.innerText;
+	el.innerText=msg;
+	setTimeout(()=>{el.innerText=txt},2000);
+}
+
 my$("#saveto").onclick=ev=>{
 	ajax({
 		url:"http://192.168.0.109:3005/update",
@@ -231,70 +239,63 @@ my$("#saveto").onclick=ev=>{
 		data:{
 			id:sheetId(),
 			datastr:tabToJstr()
-		}
+		},
+		callback:res=>saveDone(res.msg)
 	});
-
 }
-
 
 const jstrToTab=str=>{
 
-	let html="";
+	//console.log(JSON.parse(str));
  
-	for(const x of JSON.parse(str)){
-		html+=
-		`
-		<tr>
-			<td><input type="checkbox" class="checkbox" name="select"></td>
-			<td class="date">${x.date}</td>
-			<td class="in">${x.timein}</td>
-			<td class="out">${x.timeout}</td>
-			<td class="pw">
-				<span class="place">${x.place}</span>
-				<span> / </span>
-				<span class="work">${x.work}</span>
-			</td>
-			<td></td>
-			<td class="hr"></td>
-			<td class="other">${x.other}</td>
-			<td><a class="del"><img src="x.png"></a></td>
-		</tr>
-		`
+ 	const json=JSON.parse(str);
+
+ 	if(json.length==0) return;
+
+	for(const x of json){
+		const node=my$(".clone tr").cloneNode(true);
+
+		node.querySelector(".date").innerText=x.date;
+		node.querySelector(".in").innerText=x.timein;
+		node.querySelector(".out").innerText=x.timeout;
+		node.querySelector(".place").innerText=x.place;
+		node.querySelector(".work").innerText=x.work;
+		node.querySelector(".hour").innerText=x.hour;
+		node.querySelector(".other").innerText=x.other;
+
+		clickMagic(node);
+
+		my$(".data tbody").appendChild(node);
+
 	}
 
-	return html;
+	getTotal();
 
-
-		
 }
 
 const tabToJstr=x=>{
 
-	const tool=(x,sel)=>{
-		return x.querySelector(sel).innerText;
-	}
+	const innTxt=(x,sel)=>x.querySelector(sel).innerText;
 
 	const arr=[];
 
-	for(const x of my$(".data tbody tr")){
+	for(const x of my$(".data").querySelectorAll("tbody tr")){
 
 		const obj={
-			date:tool(x,".date"),
-			timein:tool(x,".in"),
-			timeout:tool(x,".out"),
-			place:tool(x,".place"),
-			work:tool(x,".work"),
-			other:tool(x,".other")
+			date:innTxt(x,".date"),
+			timein:innTxt(x,".in"),
+			timeout:innTxt(x,".out"),
+			place:innTxt(x,".place"),
+			work:innTxt(x,".work"),
+			other:innTxt(x,".other"),
+			hour:innTxt(x,".hour")
 		}
 
 		arr.push(obj);
 	}
 
+
 	return JSON.stringify(arr);
 
 }
-
-
-
-
 

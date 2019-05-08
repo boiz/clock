@@ -16,8 +16,8 @@
 		<button class="down" title="-0:05"><span>▼</span></button>
 	</div>
 
-	<input name="place" class="place" placeholder="Place" value="Office">
-	<input name="work" class="work" placeholder="Work" value="IT Support">
+	<input name="place" class="place" placeholder="Place" value="Office2">
+	<input name="work" class="work" placeholder="Work" value="IT Support2">
 	<input name="lunch" class="lunch" placeholder="lunch" value="1">
 	<input name="other" class="other" placeholder="other" value="">
 
@@ -48,8 +48,9 @@
 				<span> / </span>
 				<span class="work"></span>
 			</td>
-			<td></td>
-			<td class="hr"></td>
+			<td class="mileage"></td>
+			<td class="lunch" hidden></td>
+			<td class="hour"></td>
 			<td class="other"></td>
 			<td><a class="del"><img src="x.png"></a></td>
 		</tr>
@@ -65,6 +66,7 @@
 			<td>Time Out</td>
 			<td>Place/work</td>
 			<td>Mileage</td>
+			<td hidden>Lunch</td>
 			<td>Hours</td>
 			<td>Other</td>
 			<td>Action</td>
@@ -76,10 +78,12 @@
 	<tfoot>
 		<tr>
 			<td></td>
-			<td class="date"></td>
-			<td class="in"></td>
-			<td class="out"></td>
-			<td class="pw"></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td hidden></td>
+			<td></td>
+
 			<td>Total</td>
 			<td id="total"></td>
 			<td class="other"></td>
