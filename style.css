@@ -129,3 +129,10 @@ tr, td {
 .checkbox{
     width:initial;
 }
+
+button.highlight{
+    background:darkblue;
+    color:white;
+    border:0;
+    outline:0;
+}
