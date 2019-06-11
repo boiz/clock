@@ -71,9 +71,15 @@ const clickMagic=node=>{
 	}
 
 	node.querySelector(".del").onclick=()=>{
+
+		const an=confirm("Are you sure?");
+
+		if(!an) return;
+
 		node.onclick=null;
 		node.remove();
 		getTotal();
+		saveTo();
 	}
 }
 
@@ -124,7 +130,12 @@ const main=cell=>{
 	my$(".high .other").innerText=my$("#form .other").value;
 
 	getTotal();
+	saveTo();
+	
 }
+
+const rowLen=()=>my$(".data").rows.length-2;
+
 
 my$("#in").onclick=e=>{
 	main(my$(".data .high .in"));
@@ -135,6 +146,8 @@ my$("#out").onclick=e=>{
 }
 
 my$("#newin").onclick=e=>{
+
+	if(rowLen()==12) return;
 	addRow();
 	my$("#in").click();
 }
@@ -189,13 +202,19 @@ my$("#sheet").onchange=ev=>{
 	data(sheetId());
 }
 
+
+
 const data=id=>{
 
 	ajax({
 		url:`http://192.168.0.119:3005/data?id=${id}`,
 		method:"get",
 		callback:res=>{
-			jstrToTab(res[0].datastr);
+
+			const str=res[0].datastr;
+
+			jstrToTab(str);
+			
 		}
 	});
 
@@ -222,7 +241,6 @@ const sheetId=x=>{
 	return my$("#sheet").options[index].id;
 }
 
-
 const saveDone=msg=>{
 	const el=my$("#saveto");
 	const txt=el.innerText;
@@ -230,7 +248,7 @@ const saveDone=msg=>{
 	setTimeout(()=>{el.innerText=txt},2000);
 }
 
-my$("#saveto").onclick=ev=>{
+const saveTo=()=>{
 	ajax({
 		url:"http://192.168.0.119:3005/update",
 		method:"post",
@@ -240,6 +258,66 @@ my$("#saveto").onclick=ev=>{
 		},
 		callback:res=>saveDone(res.msg)
 	});
+	jstrToDocx(tabToJstr());
+}
+
+my$("#saveto").onclick=ev=>{
+
+	saveTo();
+	
+
+}
+
+const sendToWrite=(fn,res)=>{
+	ajax({
+		url:"http://192.168.0.119:3005/write",
+		method:"post",
+		data:{
+			fn:fn,
+			data:res
+		},
+		callback:res=>{
+			if(!res.success) alert("Write failed");
+		}
+	});
+}
+
+const jstrToDocx=str=>{
+
+ 	const arr=JSON.parse(str);
+ 	if(arr.length==0) return;
+
+	getHTML({
+		url:"temp/temp.htm",
+		callback:res=>{
+
+			const t=res.querySelectorAll(".MsoNormalTable")[1];
+			const cell=(row,col)=>t.rows[row+2].querySelectorAll("td")[col];
+			
+			const getSpan=td=>td.querySelector("span").innerText;
+			const setSpan=(td,txt)=>td.querySelector("span").innerText=txt;
+
+			let hrs=0;
+
+			arr.forEach((x,row)=>{
+				setSpan(cell(row,0),x.date);
+				setSpan(cell(row,1),x.timein);
+				setSpan(cell(row,2),x.timeout);
+				setSpan(cell(row,3),`${x.place}/${x.work}`);
+				setSpan(cell(row,5),x.hour);
+				setSpan(cell(row,6),x.other);
+
+				hrs+=Number(x.hour);
+			});
+
+			setSpan(cell(13,5),hrs.toFixed(2));
+
+			const data=res.querySelector("html").outerHTML
+			sendToWrite(`${my$("#sheet").value}.htm`,data);
+
+		}
+	});
+
 }
 
 const jstrToTab=str=>{
@@ -285,7 +363,6 @@ const tabToJstr=x=>{
 
 	for(const x of my$(".data").querySelectorAll("tbody tr")){
 
-
 		const obj={
 			date:innTxt(x,".date"),
 			timein:innTxt(x,".in"),
@@ -297,12 +374,9 @@ const tabToJstr=x=>{
 			other:innTxt(x,".other"),
 			hour:innTxt(x,".hour")
 		}
-		
-		//console.log(obj);
 
 		arr.push(obj);
 	}
-
 
 	return JSON.stringify(arr);
 
@@ -316,17 +390,3 @@ const resetTab=()=>{
 my$("#newsheet").onclick=e=>{
 
 }
-
-
-
-getHTML({
-	url:"temp.htm",
-	callback:res=>{
-
-		const t=res.querySelectorAll(".MsoNormalTable")[1];
-		const getRow=num=>t.rows[num+2];
-
-		console.log(getRow(1).querySelectorAll("td"));
-		
-	}
-});
