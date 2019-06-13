@@ -25,17 +25,18 @@ const stopTick=()=>{
 }
 
 const tick=dir=>{
+
 	const min=nd.getMinutes();
 	const remi=min%5;
 
 	let newStamp;
 
 	if(dir=="up") newStamp=stamp(nd)+(5-remi)*oneMin;
-	else if(dir=="down") newStamp=stamp(nd)-remi*oneMin;
-	
-	const sd=new Date(newStamp);
+	else if(dir=="down") newStamp=stamp(nd)-(remi?remi*oneMin:5*oneMin);
 
-	my$(".time").value=trimTime(sd);
+	nd=new Date(newStamp);
+
+	my$(".time").value=trimTime(nd);
 	stopTick();
 }
 
@@ -59,8 +60,16 @@ const unHighlight=()=>{
 }
 
 const highlight=node=>{
+
+	const fill=cn=>my$(`#form .${cn}`).value=node.querySelector(`.${cn}`).innerText;
+
+
 	node.querySelector(".checkbox").checked=true;
-	node.classList.add("high");	
+	node.classList.add("high");
+
+	for(const x of ["place","work","hour","other","lunch"]) fill(x);
+
+
 }
 
 const clickMagic=node=>{
@@ -108,9 +117,9 @@ const main=cell=>{
 	const d=getDate(my$(".time").value);
 
 	my$(".high .date").innerText=`${d.month}-${d.date}`;
-	my$(".high .place").innerText=`${form.place.value}`;
-	my$(".high .work").innerText=`${form.work.value}`;
 	
+	const fill=cn=>my$(`.high .${cn}`).innerText=my$(`#form .${cn}`).value;
+	for(const x of ["place","work","lunch"]) fill(x);
 
 	const out=valueToTime(my$(".time"));
 
@@ -343,6 +352,7 @@ const jstrToTab=str=>{
 		node.querySelector(".work").innerText=x.work;
 		node.querySelector(".hour").innerText=x.hour;
 		node.querySelector(".other").innerText=x.other;
+		node.querySelector(".lunch").innerText=x.lunch;
 
 		clickMagic(node);
 
@@ -372,7 +382,8 @@ const tabToJstr=x=>{
 			place:innTxt(x,".place"),
 			work:innTxt(x,".work"),
 			other:innTxt(x,".other"),
-			hour:innTxt(x,".hour")
+			hour:innTxt(x,".hour"),
+			lunch:innTxt(x,".lunch"),
 		}
 
 		arr.push(obj);
