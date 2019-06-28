@@ -191,14 +191,17 @@ const getTotal=()=>{
 	my$("#total").innerText=my$(".hour").map(x=>Number(x.innerText)).reduce((a,b)=>a+b).toFixed(2);
 }
 
-const sheetlist=cb=>{
+const sheetlist=()=>{
+
+	sheet.innerHTML="";
 	ajax({
 		url:"http://192.168.0.119:3005/sheetlist",
 		method:"get",
 		callback:res=>{
+
 			res.forEach((x,i)=>{
 				const html=`<option id="${x.id}">${x.sheet}</option>`;
-				my$("#sheet").innerHTML+=html;
+				sheet.innerHTML+=html;
 
 				if(i==0) data(x.id);
 
@@ -207,7 +210,10 @@ const sheetlist=cb=>{
 	});
 }
 
-my$("#sheet").onchange=ev=>{
+
+
+
+sheet.onchange=ev=>{
 	data(sheetId());
 }
 
@@ -246,8 +252,8 @@ my$("#delsheet").onclick=ev=>{
 }
 
 const sheetId=x=>{
-	const index=my$("#sheet").selectedIndex;
-	return my$("#sheet").options[index].id;
+	const index=sheet.selectedIndex;
+	return sheet.options[index].id;
 }
 
 const saveDone=msg=>{
@@ -322,7 +328,7 @@ const jstrToDocx=str=>{
 			setSpan(cell(13,5),hrs.toFixed(2));
 
 			const data=res.querySelector("html").outerHTML
-			sendToWrite(`${my$("#sheet").value}.htm`,data);
+			sendToWrite(`${sheet.value}.htm`,data);
 
 		}
 	});
@@ -400,4 +406,24 @@ const resetTab=()=>{
 
 my$("#newsheet").onclick=e=>{
 
+}
+
+const selectedOp=selNode=>selNode.options[selNode.selectedIndex];
+
+rsh.onclick=e=>{
+
+	const name=prompt("",sheet.value);
+	if(!name) return;
+
+	ajax({
+		url:"http://192.168.0.119:3005/rename",
+		method:"post",
+		data:{
+			id:sheetId(),
+			sheet:name
+		},
+		callback:res=>{
+			if(res.msg=="Done!") selectedOp(sheet).innerText=name;
+		}
+	});
 }
