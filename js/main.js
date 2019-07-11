@@ -6,7 +6,6 @@ const trimTime=dateObj=>{
 	const sec=str.substr(str.indexOf(":")+4,3);
 
 	return str.replace(sec,"");
-
 }
 
 const stamp=dateObj=>{
@@ -25,6 +24,7 @@ const stopTick=()=>{
 }
 
 const tick=dir=>{
+	nd=new Date(my$("#form .time").value);
 
 	const min=nd.getMinutes();
 	const remi=min%5;
@@ -53,7 +53,7 @@ my$(".down").onclick=()=>{
 
 const notHighlighted=()=>my$(".high").length==0;
 
-const unHighlight=()=>{
+const unhigh=()=>{
 	if(notHighlighted()) return;
 	my$(".high .checkbox").checked=false;
 	my$(".high").classList.remove("high");
@@ -63,20 +63,43 @@ const highlight=node=>{
 
 	const fill=cn=>my$(`#form .${cn}`).value=node.querySelector(`.${cn}`).innerText;
 
-
 	node.querySelector(".checkbox").checked=true;
 	node.classList.add("high");
 
 	for(const x of ["place","work","hour","other","lunch"]) fill(x);
 
+}
 
+const unhighTd=()=>{
+	const len=document.querySelectorAll(".timebg").length;
+	if(len) my$(".timebg").classList.remove("timebg");
 }
 
 const clickMagic=node=>{
 
+	const fillTime=()=>{
+		stopTick();
+		my$("#form .time").value=trimTime(new Date(Number(my$(".timebg").dataset.stamp)).toLocaleString());
+	}
+
 	node.onclick=()=>{
-		if(notHighlighted()==false) unHighlight();
+		if(notHighlighted()==false) unhigh();
 		highlight(node);
+	}
+
+	const cin=node.querySelector(".in");
+	const cout=node.querySelector(".out");
+
+	cin.onclick=e=>{
+		unhighTd();
+		cin.classList.add("timebg");
+		fillTime();
+	}
+
+	cout.onclick=e=>{
+		unhighTd();
+		cout.classList.add("timebg");
+		fillTime();
 	}
 
 	node.querySelector(".del").onclick=()=>{
@@ -157,8 +180,18 @@ my$("#out").onclick=e=>{
 my$("#newin").onclick=e=>{
 
 	if(rowLen()==12) return;
-	addRow();
+
+	const node=my$(".clone tr").cloneNode(true);
+	clickMagic(node);
+	node.click();
+
+	form.reset();
+	my$(".time").value=trimTime(nd);
+
+	
+	my$(".data tbody").appendChild(node);
 	my$("#in").click();
+
 }
 
 form.onsubmit=()=>false;
@@ -179,10 +212,7 @@ const valueToTime=timeNode=>{
 }
 
 const addRow=()=>{
-	const node=my$(".clone tr").cloneNode(true);
-	clickMagic(node);
-	node.click();
-	my$(".data tbody").appendChild(node);
+
 	
 }
 
