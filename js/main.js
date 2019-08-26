@@ -59,6 +59,18 @@ const unhigh=()=>{
 	my$(".high").classList.remove("high");
 }
 
+
+const isSameDay=node=>{
+
+	const stamp=node.querySelector(".in").dataset.stamp;
+
+	if(stampToDate(Date.now())==stampToDate(stamp)) return true;
+
+	else return false;
+
+}
+
+
 const highlight=node=>{
 
 	const fill=cn=>my$(`#form .${cn}`).value=node.querySelector(`.${cn}`).innerText;
@@ -188,7 +200,7 @@ my$("#newin").onclick=e=>{
 	form.reset();
 	my$(".time").value=trimTime(nd);
 
-	
+
 	my$(".data tbody").appendChild(node);
 	my$("#in").click();
 
@@ -209,11 +221,6 @@ const valueToTime=timeNode=>{
 	out.value=obj.toLocaleTimeString().replace(":00","");
 
 	return out;
-}
-
-const addRow=()=>{
-
-	
 }
 
 const getTotal=()=>{
@@ -258,7 +265,7 @@ const data=id=>{
 
 			const str=res[0].datastr;
 
-			jstrToTab(str);
+			if(str) jstrToTab(str);
 			
 		}
 	});
@@ -272,8 +279,9 @@ my$("#form .lunch").onkeyup=e=>{
 	const v=my$("#form .lunch").value;
 	const oth=my$("#form .other");
 
-	if(v<=1) oth.value="";
-	else oth.value=`${v}-hr Break`;
+	if(v==1) oth.value="";
+	else if(v>1) oth.value=`${v}-hr Break`;
+	else if(v==0) oth.value="No Break";
 }
 
 my$("#delsheet").onclick=ev=>{
@@ -434,9 +442,40 @@ const resetTab=()=>{
 	my$("#total").innerText=0;
 }
 
-my$("#newsheet").onclick=e=>{
+newsh.onclick=e=>{
+	const shname=prompt('','New Sheet');
+	if(!shname) return;
+
+	ajax({
+		url:"http://192.168.0.119:3005/newsheet",
+		method:"post",
+		data:{
+			shname:shname
+		},
+		callback:res=>{
+			if(res.msg=="Done!") sheetlist();
+		}
+	});
 
 }
+
+delsh.onclick=e=>{
+	const c=confirm("Proceed?");
+	if(!c) return;
+
+	ajax({
+		url:"http://192.168.0.119:3005/delsh",
+		method:"post",
+		data:{
+			id:sheetId()
+		},
+		callback:res=>{
+			if(res.msg=="Done!") sheetlist();
+		}
+	});
+
+}
+
 
 const selectedOp=selNode=>selNode.options[selNode.selectedIndex];
 

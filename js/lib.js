@@ -41,6 +41,8 @@ const getISO=(ISOTime,type)=>{
 	else if(type="time") return ISOTime.substr(11);
 }
 
+const stampToDate=s=>getISO(getISOTime(s),"date");
+
 /*NodeList.prototype.addClass=HTMLCollection.prototype.addClass=function(cn){
   for(const x of this) x.classList.add(cn)
 }
