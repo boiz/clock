@@ -10,9 +10,10 @@ button {
 }
 
 input {
-    width: 12em;
-    height: 1.5em;
-    padding: .5em;
+    width: 16em;
+    font-size: 2em;
+    padding: 0.3em;
+    height: 47px;
 }
 
 .place {
@@ -36,12 +37,27 @@ input {
 }
 
 .timewrap button {
-    position: absolute;
-    height: 1.3em;
-    width: 2em;
-    right: 0.05em;
+    position:absolute;
+    height: 33px;
+    width: 35px;
     display: inline-block;
-    border: solid gray 1px;
+}
+
+.timewrap >div{
+    position:absolute;
+    top:0;
+}
+
+.timewrap .a{
+    right: 103px;
+}
+
+.timewrap .b{
+    right: 69px;
+}
+
+.timewrap .c{
+    right: 35px;
 }
 
 .timewrap button:hover {
@@ -53,19 +69,19 @@ input {
 }
 
 .timewrap button span {
-    font-size: 0.9em;
+    font-size: 1.2em;
     position: absolute;
-    top: 0.1em;
-    left: 0.6em;
+    top: 0.3em;
+    left: 0.4em;
     color: #333;
 }
 
 .timewrap .up {
-    top: 0.1em;
+    top: 0;
 }
 
 .timewrap .down {
-    top: 1.4em;
+    top: 32px;
 }
 
 tr, td {

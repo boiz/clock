@@ -26,9 +26,7 @@ const stopTick=()=>{
 	my$(".time").classList.remove("blink");
 }
 
-const tick=dir=>{
-
-	const m=5
+const tick=(dir,m)=>{
 
 	nd=new Date(my$("#form .time").value);
 
@@ -49,12 +47,28 @@ const tick=dir=>{
 my$(".time").value=trimTime(nd);
 my$(".time").onclick=stopTick;
 
-my$(".up").onclick=()=>{
-	tick("up");
+my$(".a .up").onclick=()=>{
+	tick("up",5);
 }
 
-my$(".down").onclick=()=>{
-	tick("down");
+my$(".a .down").onclick=()=>{
+	tick("down",5);
+}
+
+my$(".b .up").onclick=()=>{
+	tick("up",60);
+}
+
+my$(".b .down").onclick=()=>{
+	tick("down",60);
+}
+
+my$(".c .up").onclick=()=>{
+	tick("up",60*24);
+}
+
+my$(".c .down").onclick=()=>{
+	tick("down",60*24);
 }
 
 const notHighlighted=()=>my$(".high").length==0;

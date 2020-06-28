@@ -7,19 +7,28 @@
 </head>
 <body>
 
-
 <form id="form" class="container">
 
 	<div class="timewrap">
 		<input class="time blink">
-		<button class="up" title="+0:05"><span>▲</span></button>
-		<button class="down" title="-0:05"><span>▼</span></button>
+		<div class="a">
+			<button class="up" title="+5 minutes"><span>▲</span></button>
+			<button class="down" title="-5 minutes"><span>▼</span></button>		
+		</div>
+		<div class="b">
+			<button class="up" title="+1 hour"><span>▲</span></button>
+			<button class="down" title="-1 hour"><span>▼</span></button>		
+		</div>
+		<div class="c">
+			<button class="up" title="+1 day"><span>▲</span></button>
+			<button class="down" title="-1 day"><span>▼</span></button>		
+		</div>
 	</div>
 
-	<input name="place" class="place" placeholder="Place" value="IPDI">
-	<input name="work" class="work" placeholder="Work" value="IT Support">
-	<input name="lunch" class="lunch" placeholder="lunch" value="1">
-	<input name="other" class="other" placeholder="other" value="">
+	<input hidden name="place" class="place" placeholder="Place" value="IPDI">
+	<input hidden name="work" class="work" placeholder="Work" value="IT Support">
+	<input hidden name="lunch" class="lunch" placeholder="lunch" value="1">
+	<input hidden name="other" class="other" placeholder="other" value="">
 
 </form>
 
@@ -31,19 +40,11 @@
 	<button id="delsh">Delete</button>
 </div>
 
-
-
 <div class="button">
 	<button id="newin" class="highlight">New In</button>
 	<button id="in" class="highlight">In</button>
 	<button id="out" class="highlight">Out</button>
-</div>
-
-<div class="button">
 	<button id="out8" class="highlight">Out +8</button>
-	<button id="up1hr">Up 1hr</button>
-	<button id="down1hr">Down 1hr</button>
-	
 </div>
 
 <table class="clone" hidden>
