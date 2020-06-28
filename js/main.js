@@ -5,6 +5,9 @@ const trimTime=dateObj=>{
 	const str=dateObj.toLocaleString();
 	const sec=str.substr(str.indexOf(":")+4,3);
 
+
+	my$('.time').dataset.stamp=dateObj.getTime()
+
 	return str.replace(sec,"");
 }
 
@@ -24,15 +27,18 @@ const stopTick=()=>{
 }
 
 const tick=dir=>{
+
+	const m=5
+
 	nd=new Date(my$("#form .time").value);
 
 	const min=nd.getMinutes();
-	const remi=min%5;
+	const remi=min%m;
 
 	let newStamp;
 
-	if(dir=="up") newStamp=stamp(nd)+(5-remi)*oneMin;
-	else if(dir=="down") newStamp=stamp(nd)-(remi?remi*oneMin:5*oneMin);
+	if(dir=="up") newStamp=stamp(nd)+(m-remi)*oneMin;
+	else if(dir=="down") newStamp=stamp(nd)-(remi?remi*oneMin:m*oneMin);
 
 	nd=new Date(newStamp);
 
@@ -189,6 +195,26 @@ my$("#out").onclick=e=>{
 	main(my$(".data .high .out"));
 }
 
+
+
+
+
+
+out8.onclick=e=>{
+	for(let i=0;i<9*12;i++) my$('.up').click()
+	out.click()
+}
+
+up1hr.onclick=e=>{
+	for(let i=0;i<12;i++) my$('.up').click()
+}
+
+down1hr.onclick=e=>{
+	for(let i=0;i<12;i++) my$('.down').click()
+}
+
+
+
 my$("#newin").onclick=e=>{
 
 	if(rowLen()==12) return;
@@ -198,8 +224,8 @@ my$("#newin").onclick=e=>{
 	node.click();
 
 	form.reset();
-	my$(".time").value=trimTime(nd);
 
+	my$(".time").value=trimTime(nd);
 
 	my$(".data tbody").appendChild(node);
 	my$("#in").click();
@@ -232,7 +258,7 @@ const sheetlist=()=>{
 
 	sheet.innerHTML="";
 	ajax({
-		url:"http://192.168.0.119:3005/sheetlist",
+		url:"http://192.168.0.174:3005/sheetlist",
 		method:"get",
 		callback:res=>{
 
@@ -259,7 +285,7 @@ sheet.onchange=ev=>{
 const data=id=>{
 
 	ajax({
-		url:`http://192.168.0.119:3005/data?id=${id}`,
+		url:`http://192.168.0.174:3005/data?id=${id}`,
 		method:"get",
 		callback:res=>{
 
@@ -303,7 +329,7 @@ const saveDone=msg=>{
 
 const saveTo=()=>{
 	ajax({
-		url:"http://192.168.0.119:3005/update",
+		url:"http://192.168.0.174:3005/update",
 		method:"post",
 		data:{
 			id:sheetId(),
@@ -323,7 +349,7 @@ my$("#saveto").onclick=ev=>{
 
 const sendToWrite=(fn,res)=>{
 	ajax({
-		url:"http://192.168.0.119:3005/write",
+		url:"http://192.168.0.174:3005/write",
 		method:"post",
 		data:{
 			fn:fn,
@@ -447,7 +473,7 @@ newsh.onclick=e=>{
 	if(!shname) return;
 
 	ajax({
-		url:"http://192.168.0.119:3005/newsheet",
+		url:"http://192.168.0.174:3005/newsheet",
 		method:"post",
 		data:{
 			shname:shname
@@ -464,7 +490,7 @@ delsh.onclick=e=>{
 	if(!c) return;
 
 	ajax({
-		url:"http://192.168.0.119:3005/delsh",
+		url:"http://192.168.0.174:3005/delsh",
 		method:"post",
 		data:{
 			id:sheetId()
@@ -485,7 +511,7 @@ rsh.onclick=e=>{
 	if(!name) return;
 
 	ajax({
-		url:"http://192.168.0.119:3005/rename",
+		url:"http://192.168.0.174:3005/rename",
 		method:"post",
 		data:{
 			id:sheetId(),
